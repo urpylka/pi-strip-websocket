@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<!-- saved from url=(0097)https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519 -->
+<html class=" overthrow-enabled"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1251"><script type="text/javascript" async="" id="topmailru-code" src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/code.js"></script><script async="" src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/analytics.js"></script><script src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/250301471808186" async=""></script><script async="" src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/fbevents.js"></script><script type="text/javascript" async="" src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/watch.js"></script><script type="text/javascript" src="https://an.yandex.ru/system/context.js" async="true"></script>
+					
+					<title>Управление светодиодной лентой на Raspberry PI через websocket</title>
+					<meta name="yandex-verification" content="4810d7a06b7443d3">
+					<meta property="fb:admins" content="100000072189793">
+					<meta name="description" content="Управление светодиодной лентой на Raspberry PI через websocket">
+					<meta name="keywords" content="">
+					<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+					<meta name="apple-mobile-web-app-capable" content="yes">
+					<link rel="canonical" href="https://pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519">
+					<meta property="fb:app_id" content="586543721489673">
+			
+				<meta property="article:author" content="https://www.facebook.com/pikabu.ru">
+				<meta property="article:publisher" content="https://www.facebook.com/pikabu.ru">
+				<meta property="og:type" content="article">
+				<meta property="og:title" content="Управление светодиодной лентой на Raspberry PI через websocket">
+				<meta property="og:url" content="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519">
+				<meta property="og:image" content="https://cs5.pikabu.ru/post_img/2015/12/22/7/og_og_1450785037291197617.jpg">
+				<meta property="og:site_name" content="Пикабу">
+			
+					<meta property="og:description" content="Всем привет!Продолжаем тему Raspberry PI и гирлянд. (Предыдущий пост) Сейчас мы рассмотрим светодиодные ленты/гирлянды на чипах WS2811,  WS2812,  WS2812b и способы управления ими . Сначала немного тео Автор: dpohvar">
+				
+				<script type="text/javascript">
+					// define initial parameters
+					var initParams = {"siteURL":"https:\/\/m.pikabu.ru\/","imgURL":"https:\/\/cs.pikabu.ru\/","userID":0,"userName":"","userKarma":0,"sessionID":"87d4lgov3abfi41nq1dt6sbq0rkg9h47","userBanTime":"","isUserBanned":false,"isStoryAnimPreview":true,"isCommAnimPreview":true,"isScrollTopBtn":true,"isAjaxLoadMode":true,"isExpandedMode":true,"isCommentsBranchesHidden":false,"scriptName":"story.php","privateKey":"QWZOOTdq","uniqueBufferID":"4a48b3475a","registrationKey":"8d48cc4ee3","debugLocation":"","pickedDate":"2017-09-20","pageNumber":1,"environment":225,"developmentMode":false,"filter_name":"","upload_server_url":"https:\/\/u.pikabu.ru","max_comments_branch_depth":3};
+
+					/**
+					 * Create old global vars for back compatibility
+					 */
+					var logined = initParams.userID > 0 ? 1 : 0,
+						uCarma = initParams.userKarma,
+						phpSelf = initParams.scriptName,
+						ppk = initParams.privateKey,
+						bid = initParams.uniqueBufferID,
+						site_url = initParams.siteURL,
+						img_url = initParams.imgURL,
+						tag_str = "",
+						developmentMode = initParams.developmentMode,
+						is_twitmode = initParams.isAjaxLoadMode ? 1 : 0,
+						is_scrollmode = initParams.isExpandedMode ? 1 : 0,
+						regKey = initParams.registrationKey,
+						sessID = initParams.sessionID,
+						picker_date = new Date(initParams.pickedDate),
+						pl = 0,
+						page_num = initParams.pageNumber,
+						dev = initParams.developmentMode,
+						nextJS = {
+							mv: {
+								facebookWidget: false
+							},
+							adbix: 0,
+							banned: initParams.isUserBanned,
+							bannedTime: initParams.userBanTime,
+							best: "",
+							listDate: "",
+							gif: {
+							    background: true,
+							    showComment: !initParams.isCommAnimPreview,
+							    showStory: !initParams.isStoryAnimPreview
+							},
+							options: {
+							    autoShowGif: initParams.isCommAnimPreview
+							},
+							filterName: initParams.filter_name,
+							user: {
+							    id: initParams.userID,
+							    name: initParams.userName
+							},
+							scrollToTop: initParams.isScrollTopBtn,
+							hideSaveMenu: initParams.isHideSaveMenu,
+							location: initParams.debugLocation
+						};
+				</script>
+			
+			<link type="text/css" rel="stylesheet" href="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/font-awesome.min.css">
+ 			<link type="text/css" rel="stylesheet" href="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/style.css">
+		
+			<script type="text/javascript" charset="utf-8" src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/jquery.min.js"></script>
+ 			<script type="text/javascript" charset="utf-8" src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/app.js" id="applicationMain" data-environment="production" data-version="1.3.139"></script>
+		
+				<script type="text/javascript">
+					$.ajaxSetup({headers: {"X-Csrf-Token" : initParams.sessionID}});
+					$.browser = {safari: false, opera: false};
+				</script>
+			
+					<link rel="apple-touch-icon" href="https://cs.pikabu.ru/mobile/img/apple-touch-icon-60x60.png">
+					<link rel="apple-touch-icon" sizes="76x76" href="https://cs.pikabu.ru/mobile/img/apple-touch-icon-76x76.png">
+					<link rel="apple-touch-icon" sizes="120x120" href="https://cs.pikabu.ru/mobile/img/apple-touch-icon-120x120.png">
+					<link rel="apple-touch-icon" sizes="152x152" href="https://cs.pikabu.ru/mobile/img/apple-touch-icon-152x152.png">
+
+					<link href="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/css" rel="stylesheet" type="text/css">
+					<link rel="stylesheet" href="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/style(1).css">
+					<link rel="stylesheet" href="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/mobile.css">
+
+					<script src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/main.js"></script>
+					<script src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/overthrow-detect.js"></script>
+					<script src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/overthrow-polyfill.js"></script>
+					<script src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/overthrow-toss.js"></script>
+					<script src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/overthrow-init.js"></script>
+					<script type="text/javascript">
+						$.ajaxSetup({headers: {"X-Csrf-Token" : initParams.sessionID}});
+						$.browser = {safari: false, opera: false};
+					</script>
+			
+				</head>
+				<body class="no-touch"><div class="b-application"></div>
+			
+				<div id="left_container" class="left_bar">
+					<!-- Top panel for tablets -->
+					<div class="header tablet">
+						<a href="https://m.pikabu.ru/hot" class="logo">&nbsp;</a>
+			
+					<span class="tologin_control control button boldlabel">Войти</span>
+				
+				</div>
+				<!-- Main Menu -->
+				<div class="sidebar overthrow" id="sidebar_menu">
+					<!-- Top panel for mobile phones -->
+					<div class="header mobile logo_big_bg">
+						<span class="close_control control">&nbsp;</span>
+			
+					<span class="tologin_control control button boldlabel">Войти</span>
+				
+					</div>
+					<div class="menu_table">
+						<div class="main_menu">
+							<ul>
+								<li class="title">
+									<a href="https://m.pikabu.ru/hot">Горячее</a>
+								</li>
+								<li class="title">
+									<a href="https://m.pikabu.ru/best">Лучшее</a>
+								</li>
+								<li class="title">
+									<a href="https://m.pikabu.ru/new">Свежее</a>
+								</li>
+								<li class="title">
+									<a href="https://m.pikabu.ru/communities">Сообщества</a>
+								</li>
+			
+							<li class="bigtext menu-group">
+								<div><i class="fa fa-angle-down"></i><span>показать ещё...</span></div>
+							</li>
+							<li class="bigtext menu-extra-item">
+								<a href="https://m.pikabu.ru/search.php?n=16&amp;r=3">[Моё]</a>
+							</li>
+							<li class="bigtext menu-extra-item">
+								<a href="https://m.pikabu.ru/tag_list.php">Теги</a>
+							</li>
+							<li class="bigtext menu-extra-item last-item">
+								<a href="https://m.pikabu.ru/top50_comm.php">Комментарии дня</a>
+							</li>
+							<li class="text search-bar">
+								<form action="https://m.pikabu.ru/search.php" method="GET">
+									<div>
+										<div>
+											<input type="text" name="q" value="" placeholder="Поиск">
+										</div>
+										<div>
+											<button type="submit"><i class="fa fa-search"></i></button>
+										</div>
+									</div>
+								</form>
+							</li>
+							<li class="text hide_show control">
+								<span>Скрывать просмотренное</span>
+								<span class="checkbox off disabled"><i>&nbsp;</i></span>
+							</li>
+						</ul>
+					</div>
+					<div class="sidebar_menu_footer">
+						<div class="main_footer_menu">
+							<ul>
+			
+								<li class="text">
+									<a href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519?dv=1">Полная версия</a>
+								</li>
+								<li class="text">
+									<a href="https://m.pikabu.ru/html.php?id=faq">FAQ</a>
+								</li>
+								<li class="text">
+									<a href="https://m.pikabu.ru/html.php?id=wtf">Правила</a>
+								</li>
+								<li class="text">
+									<a href="https://m.pikabu.ru/html.php?id=ad">Реклама</a>
+								</li>
+								<li class="text">
+									<a href="https://m.pikabu.ru/html.php?id=contacts">Контакты</a>
+								</li>
+								<li class="text">
+									<a href="https://m.pikabu.ru/html.php?id=terms">Конфиденциальность</a>
+								</li>
+							</ul>
+						</div>
+
+						<div class="main_social_menu">
+							<ul>
+								<li>
+									<a class="social vk" href="http://vk.com/pikabu" target="_blank">VKontakte</a>
+								</li>
+								<li>
+									<a class="social fb" href="https://www.facebook.com/pikabu.ru" target="_blank">Facebook</a>
+								</li>
+								<li>
+									<a class="social telegram" href="https://telegram.me/pikabu_ru" target="_blank">Telegram</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				</div>
+				<!-- END of Main Menu -->
+			
+				</div>
+				<!-- END of Left Container -->
+
+				<div id="right_container">
+					<!-- Top header for mobile phones -->
+					<div class="header mobile">
+						<span class="menu_control control"><i class="fa fa-bars"></i></span>
+						<span class="logo control">&nbsp;</span>
+						<div class="scroll-up active">
+							<h1 class="page_title">Пост</h1>
+							<span class="scroll-up-arrow"><i class="fa fa-arrow-up"></i></span>
+						</div>
+			
+					<span class="tologin_control control button boldlabel">Войти</span>
+				
+					</div>
+
+					<!-- Top header for mobile tables -->
+					<div class="header tablet page-heading">
+						<div class="scroll-up active">
+							<h1 class="page_title">Пост</h1>
+							<span class="scroll-up-arrow"><i class="fa fa-arrow-up"></i></span>
+						</div>
+					</div>
+				</div>
+				<!-- End OF Right Container -->
+			
+				<div id="auth_container" class="hidden-noim">
+					<div id="auth_box">
+						<div id="auth_box_top" class="logo_big_bg auth_box_s">
+							<span class="close_control control">&nbsp;</span>
+						</div>
+						<div id="auth_box_need" style="display: none;">
+							Необходимо войти или зарегистрироваться
+						</div>
+						<div id="auth_box_error" style="display: none;">
+							<div class="auth_box_s text">
+								Неверный логин или пароль
+								<br>
+								<span class="control auth_retrieve_control">Восстановить пароль?</span>
+							</div>
+						</div>
+						<div id="restore_box_error" style="display: none;">
+							<div class="auth_box_s text"></div>
+						</div>
+						<div id="registration_box_error" class="text" style="display: none">Логин уже используется</div>
+						<div id="registration_box" class="auth_box auth_box_s">
+							<form class="regform" method="POST" action="javascript:void 0;">
+								<h2 class="page_title">Регистрация</h2>
+								<div style="padding-bottom: 10px;">
+									<a href="https://m.pikabu.ru/oauth.php?type=vk"><i class="oauth-provider oauth-provider_type_vk"></i></a>
+									<a href="https://m.pikabu.ru/oauth.php?type=fb"><i class="oauth-provider oauth-provider_type_facebook"></i></a>
+									<a href="https://m.pikabu.ru/oauth.php?type=tw"><i class="oauth-provider oauth-provider_type_twitter"></i></a>
+									<a href="https://m.pikabu.ru/oauth.php?type=google"><i class="oauth-provider oauth-provider_type_google"></i></a>
+								</div>
+								<input type="text" name="username" class="form_input first" placeholder="Логин">
+								<input type="email" name="email" class="form_input" placeholder="E-mail">
+								<input type="password" name="password" data-additional="_N4Jcbz" class="form_input" placeholder="Пароль">
+								<button type="submit" class="form_input submit_button label active submit_button_reg">Создать аккаунт</button>
+							</form>
+							<span class="control auth_tologin_control text">Уже есть аккаунт?</span>
+						</div>
+
+						<div id="login_box" class="auth_box auth_box_s hidden">
+							<form class="regform" action="https://m.pikabu.ru/signin.php" method="POST">
+								<h2 class="page_title">Авторизация</h2>
+								<div style="padding-bottom: 10px;">
+									<a href="https://m.pikabu.ru/oauth.php?type=vk"><i class="oauth-provider oauth-provider_type_vk"></i></a>
+									<a href="https://m.pikabu.ru/oauth.php?type=fb"><i class="oauth-provider oauth-provider_type_facebook"></i></a>
+									<a href="https://m.pikabu.ru/oauth.php?type=tw"><i class="oauth-provider oauth-provider_type_twitter"></i></a>
+									<a href="https://m.pikabu.ru/oauth.php?type=google"><i class="oauth-provider oauth-provider_type_google"></i></a>
+								</div>
+								<input type="text" name="username" class="form_input first" placeholder="Логин">
+								<input type="password" name="password" class="form_input last" placeholder="Пароль">
+								<input type="hidden" name="mode" value="login">
+								<input type="submit" class="form_input submit_button label active submit_button_login" value="Войти">
+								<span class="control auth_retrieve_control text">Забыли пароль?</span>
+							</form>
+							<a href="https://m.pikabu.ru/signup.php"><span class="control auth_toreg_control label">Регистрация</span></a>
+						</div>
+
+						<div id="retrieve_box" class="auth_box auth_box_s hidden">
+							<form class="regform" method="POST" action="javascript:void 0;">
+								<h2 class="page_title">Восстановление пароля</h2>
+								<input type="text" name="login" class="form_input first" placeholder="Логин">
+								<input type="email" name="email" class="form_input last" placeholder="E-mail">
+								<input type="submit" class="form_input submit_button label active submit_button_retrieve" value="Прислать пароль">
+							</form>
+							<span class="control auth_tologin_control text">Авторизация</span>
+						</div>
+					</div>
+					<a class="fullversion boldlabel control" href="https://pikabu.ru/">Полная версия Пикабу</a>
+				</div>
+			
+				<div class="right_container_wrapper">
+					<div class="after_header">
+			<!-- cached -->
+				<div class="content_container" data-user-in-comments="0">
+			
+					<input type="hidden" name="save-cats" value="[{&quot;id&quot;:0,&quot;name&quot;:&quot;\u041e\u0431\u0449\u0435\u0435&quot;,&quot;count&quot;:1}]">
+				
+				<!--story_3881519_start-->
+				<div class="post post_inside" data-story-id="3881519" data-visited="false">
+			
+				<h2 class="post_title page_title"><a href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519" class="to-comments">Управление светодиодной лентой на Raspberry PI через websocket</a></h2>
+				<div class="post_after_title_box">
+			<a href="https://m.pikabu.ru/search.php?n=16&amp;r=3" class="post_tag_my">[Моё]</a>
+					<a href="https://m.pikabu.ru/profile/dpohvar" class="post_author  boldlabel">dpohvar</a>
+				
+					<span class="post_date">632 дня назад</span>
+				
+				</div>
+			
+				<div class="b-story__content b-story-blocks b-story-blocks_with-border" data-expanded="true">
+					<div class="b-story-blocks__wrapper" style="">
+			
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Всем привет!</p><p>Продолжаем тему Raspberry PI и гирлянд. (<a href="http://pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_s_pomoshchyu_raspberry_pi_3864124" target="_blank">Предыдущий пост</a>)</p><p> Сейчас мы рассмотрим светодиодные ленты/гирлянды на чипах <b>WS2811</b>,&nbsp; <b>WS2812</b>,&nbsp; <b>WS2812b</b> и способы управления ими . </p><p></p>
+							</div>
+						</div>
+					
+							<div class="b-story-block b-story-block_type_image">
+								<div class="b-story-block__content b-story-block__content_margin">
+									<div class="b-gifx" data-type="story" style="width: 750px; height: 556px;" data-width="506" data-height="375">
+										<div class="b-gifx__state b-gifx__state_loading_yes b-gifx__state_show_no" style=""><i class="fa fa-circle-o-notch"></i></div>
+										<div class="b-gifx__state b-gifx__state_waiting_yes b-gifx__state_show_yes" style=""><span class="b-gifx__size">484 Кб</span></div>
+										<a class="b-gifx__state b-gifx__state_playing_yes b-gifx__save" style="visibility: hidden;" href="https://cs5.pikabu.ru/post_img/2015/12/22/8/1450787093190068842.gif" target="_blank"><i class="fa fa-download"></i></a>
+										<div class="b-gifx__preview b-gifx__preview_show_yes">
+											<img class="b-gifx__image" src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/1450787093190068842.jpg" alt="Управление светодиодной лентой на Raspberry PI через websocket raspberry pi, микроконтроллеры, светодиодная лента, JavaScript, Nodejs, гирлянда, гифка, длиннопост">
+											<div class="b-gifx__logo i-sprite--gifx__gifx"></div>
+											<div class="b-gifx__play i-sprite--gifx__play"></div>
+										</div>
+										<div class="b-gifx__player" data-src="https://cs5.pikabu.ru/post_img/2015/12/22/8/1450787093190068842.gif" data-size-gif="484" data-size-mp4="194" data-size-webm="197"></div>
+									</div>
+								</div>
+							</div>
+						
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Сначала немного теории.</p><p>WS2811 и WS2812 работают на частоте около&nbsp;800 кГц. Данные передаются с помощью широтно-импульсной модуляции.</p><p></p>
+							</div>
+						</div>
+					
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Для передачи нуля или единицы используется различная скважность импульса.</p><p></p>
+							</div>
+						</div>
+					
+							<div class="b-story-block b-story-block_type_image">
+								<div class="b-story-block__content b-story-block__content_margin">
+						
+								<a href="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/1450762480119827968.png" target="_blank"><img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/1450762480119827968.png" data-large-image="https://cs5.pikabu.ru/post_img/2015/12/22/4/1450762480119827968.png" data-viewable="true" alt="Управление светодиодной лентой на Raspberry PI через websocket raspberry pi, микроконтроллеры, светодиодная лента, JavaScript, Nodejs, гирлянда, гифка, длиннопост" style="" data-height="247"></a>
+							
+								</div>
+							</div>
+						
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Каждый отдельный светодиод принимает только 24 бита информации, все оставшееся биты пропускает на следующий светодиод.</p><p></p>
+							</div>
+						</div>
+					
+							<div class="b-story-block b-story-block_type_image">
+								<div class="b-story-block__content b-story-block__content_margin">
+						
+								<a href="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/1450770622164020166.png" target="_blank"><img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/1450770622164020166.png" data-large-image="https://cs5.pikabu.ru/post_img/2015/12/22/5/1450770622164020166.png" data-viewable="true" alt="Управление светодиодной лентой на Raspberry PI через websocket raspberry pi, микроконтроллеры, светодиодная лента, JavaScript, Nodejs, гирлянда, гифка, длиннопост" style="" data-height="106"></a>
+							
+								</div>
+							</div>
+						
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>биты передаются в таком порядке:</p><p>G7 G6 G5 G4 G3 G2 G1 G0 &nbsp; &nbsp;R7 R6 R5 R4 R3 R2 R1 R0 &nbsp; &nbsp;R8 B7 B6 B5 B4 B3 B2 B1 B0</p><p>Обратите внимание, что сначала передается зеленый, а не красный, как в RGB-системе.</p><p>То есть, чтобы зажечь светодиод оранжевым цветом (#FF8000), мы отправим:</p><p>| 1 0 0 0 | 0 0 0 0 | 1 1 1 1 | 1 1 1 1 | 0 0 0 0 | 0 0 0 0 |</p><p>| &nbsp; &nbsp; 8 &nbsp; &nbsp; | &nbsp; &nbsp; 0 &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp;F &nbsp; &nbsp; | &nbsp; &nbsp; F &nbsp; &nbsp; | &nbsp; &nbsp; 0 &nbsp; &nbsp; | &nbsp; &nbsp; 0 &nbsp; &nbsp; |</p><p></p>
+							</div>
+						</div>
+					
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Пауза в 50мс или дольше делает сброс. Светодиоды продолжают гореть в том состоянии, в котором их оставили раньше, но следующий блок данных будет снова считываться первым светодиодом. Чтобы погасить ленту, нужно отправить 24 нулевых бита каждому светодиоду, или же просто отключить ее от питания.</p><p></p>
+							</div>
+						</div>
+					
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p> По <a href="https://www.adafruit.com/datasheets/WS2812.pdf" target="_blank"> даташиту </a> допустимая погрешность во времени переключения импульса составляет 150 наносекунд, поэтому оба типа совместимы и могут управляться одним и тем же контроллером. <br></p><p></p>
+							</div>
+						</div>
+					
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Один из способов управлять светодиодами - подключить управление ленты (DATA) к разъему SPI_MOSI (GPIO10). Затем включить драйвер SPI на частоте 3.2 мГц (в 4 раза выше частоты ленты) и передавать бинарные данные:</p><p>1000 - для передачи на ленту нуля</p><p>1100 - для передачи на ленту единицы</p><p></p>
+							</div>
+						</div>
+					
+							<div class="b-story-block b-story-block_type_image">
+								<div class="b-story-block__content b-story-block__content_margin">
+						
+								<a href="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/1450764078185316205.png" target="_blank"><img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/1450764078185316205.png" data-large-image="https://cs5.pikabu.ru/post_img/2015/12/22/5/1450764078185316205.png" data-viewable="true" alt="Управление светодиодной лентой на Raspberry PI через websocket raspberry pi, микроконтроллеры, светодиодная лента, JavaScript, Nodejs, гирлянда, гифка, длиннопост" style="" data-height="122"></a>
+							
+								</div>
+							</div>
+						
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Очень похоже на графики выше, при этом мы отлично укладываемся в погрешность 0.15 микросекунд.</p><p>Таким образом у нас получается четырехкратная избыточность информации.</p><p>К сожалению, стандартный драйвер SPI имеет ограничение на 32767 байт в одном непрерывном сообщении, Поэтому максимальное число светодиодов, которыми мы можем управлять:</p><p></p>
+							</div>
+						</div>
+					
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (байт в сообщении) * (бит в байте) / (бит на светодиод) / (избыточность) <br></p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;32767 * 8 / 24 / 4 = <b>2730</b></p><p></p>
+							</div>
+						</div>
+					
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Мало? В принципе, достаточно, чтобы управлять 45-метровой лентой с частотой по 60 диодов на метр, или почти 19-метровой лентой с максимальной плотностью диодов (144 на метр)</p><p></p>
+							</div>
+						</div>
+					
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Напряжение на портах GPIO составляет 0 и 3.3v, а лента требует 5v.</p><p>Чтобы поднять уровень сигнала до 5v, рекомендуют использовать сместитель уровня <b>74HCT125P</b> или <b>74HCT125</b>. Подключается он таким образом:</p><p></p>
+							</div>
+						</div>
+					
+							<div class="b-story-block b-story-block_type_image">
+								<div class="b-story-block__content">
+						
+								<a href="https://cs5.pikabu.ru/post_img/big/2015/12/22/5/1450770311166023258.png" target="_blank"><img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/1450770311166023258.png" data-large-image="https://cs5.pikabu.ru/post_img/big/2015/12/22/5/1450770311166023258.png" data-viewable="true" alt="Управление светодиодной лентой на Raspberry PI через websocket raspberry pi, микроконтроллеры, светодиодная лента, JavaScript, Nodejs, гирлянда, гифка, длиннопост" style="" data-height="287"></a>
+							
+								</div>
+							</div>
+						
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Но в моем случае ленточка заработала напрямую с порта GPIO, так что этот пункт считаем необязательным.</p><p></p>
+							</div>
+						</div>
+					
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Теперь о том, как управлять ленточками удаленно через браузер.</p><p>Для начала на Raspberry PI нужно запустить приложение, которое будет ожидать получение данных по сети и в соответствии с ними зажигать определенный цвет.</p><p></p>
+							</div>
+						</div>
+					
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p> Для манипуляции с адресной лентой проще всего использовать уже готовый драйвер. Мой выбор остановился на библиотеке <b>rpi-ws281x-native</b> для nodejs.<br></p><p> Я написал приложение, которое может управлять всеми лентами через вебсокеты.</p><p> Скопировать и установить его себе можно так:</p><p></p>
+							</div>
+						</div>
+					
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p><b>git clone <noindex><a rel="nofollow" href="https://github.com/DPOH-VAR/pi-strip-websocket.git" target="_blank">https://github.com/DPOH-VAR/pi-strip-websocket.git</a></noindex></b></p><p><b>sudo npm install node-gyp -g</b></p><p><b>cd pi-strip-websocket</b></p><p><b>sudo npm install</b></p><p></p>
+							</div>
+						</div>
+					
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Теперь переходим в папку pi-strip-websocket, открываем config.json и настраиваем под себя:</p><p></p>
+							</div>
+						</div>
+					
+							<div class="b-story-block b-story-block_type_image">
+								<div class="b-story-block__content b-story-block__content_margin">
+						
+								<a href="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/1451279724115617291.png" target="_blank"><img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/1451279724115617291.png" data-large-image="https://cs5.pikabu.ru/post_img/2015/12/28/4/1451279724115617291.png" data-viewable="true" alt="Управление светодиодной лентой на Raspberry PI через websocket raspberry pi, микроконтроллеры, светодиодная лента, JavaScript, Nodejs, гирлянда, гифка, длиннопост" style="" data-height="321"></a>
+							
+								</div>
+							</div>
+						
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>В этом примере указано подключение трёх ленточек. Ими можно будет управлять по адресам:</p><p>ws://raspberrypi:4440/LED-RGB/</p><p>ws://raspberrypi:4440/LED-WS2812/<br></p><p>ws://raspberrypi:4440/LED-WHITE/<br></p><p></p>
+							</div>
+						</div>
+					
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Запускаем приложение:</p><p><b>sudo node index</b></p><p>Теперь остается только подключиться по вебсокету по одному из адресов и отправить данные.</p><p>- Для <b>RGB </b>лент мы отправляем три байта, отвечающие за R,G,B компоненты.</p><p>- Для <b>адресной ленты</b> мы отправляем <b>по три байта</b> на каждый светодиод (порядок RGB)</p><p>На любом компьютере открываем гуглохром, на <b>не https</b> страничке заходим в консоль (F12) и пишем:</p><p></p>
+							</div>
+						</div>
+					
+							<div class="b-story-block b-story-block_type_image">
+								<div class="b-story-block__content b-story-block__content_margin">
+						
+								<a href="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/1451281485182348059.png" target="_blank"><img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/1451281485182348059.png" data-large-image="https://cs5.pikabu.ru/post_img/2015/12/28/4/1451281485182348059.png" data-viewable="true" alt="Управление светодиодной лентой на Raspberry PI через websocket raspberry pi, микроконтроллеры, светодиодная лента, JavaScript, Nodejs, гирлянда, гифка, длиннопост" style="" data-height="175"></a>
+							
+								</div>
+							</div>
+						
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Этот скрипт будет каждый раз в 500 миллисекунд зажигать RGB ленту случайным цветом.</p><p></p>
+							</div>
+						</div>
+					
+						<div class="b-story-block b-story-block_type_text">
+							<div class="b-story-block__content">
+								<p></p><p>Вот и всё. Теперь наш Raspberry PI позволяет управлять ленточками из любого современного браузера в рамках домашней сети. В комментариях или следующем посте расскажу о том, как сделать веб-страничку с выбором цвета лент из палитры или простейшим алгоритмом для переливания.</p><p></p>
+							</div>
+						</div>
+					
+				</div>
+			
+				</div>
+			
+				<div class="post_tags">
+					<ul>
+			<li class="post_tag post_tag_strawberry hidden"><a href="https://m.pikabu.ru/search.php?n=32&amp;r=3">&nbsp;</a></li>
+						<li class="post_tag"><a class="to-comments" href="https://m.pikabu.ru/tag/raspberry%20pi/hot">raspberry pi</a></li>
+					
+						<li class="post_tag"><a class="to-comments" href="https://m.pikabu.ru/tag/%EC%E8%EA%F0%EE%EA%EE%ED%F2%F0%EE%EB%EB%E5%F0%FB/hot">микроконтроллеры</a></li>
+					
+						<li class="post_tag"><a class="to-comments" href="https://m.pikabu.ru/tag/%F1%E2%E5%F2%EE%E4%E8%EE%E4%ED%E0%FF%20%EB%E5%ED%F2%E0/hot">светодиодная лента</a></li>
+					
+						<li class="post_tag"><a class="to-comments" href="https://m.pikabu.ru/tag/JavaScript/hot">JavaScript</a></li>
+					
+						<li class="post_tag"><a class="to-comments" href="https://m.pikabu.ru/tag/Nodejs/hot">Nodejs</a></li>
+					
+						<li class="post_tag"><a class="to-comments" href="https://m.pikabu.ru/tag/%E3%E8%F0%EB%FF%ED%E4%E0/hot">гирлянда</a></li>
+					
+						<li class="post_tag"><a class="to-comments" href="https://m.pikabu.ru/tag/%E3%E8%F4%EA%E0/hot">гифка</a></li>
+					
+						<li class="post_tag"><a class="to-comments" href="https://m.pikabu.ru/tag/%E4%EB%E8%ED%ED%EE%EF%EE%F1%F2/hot">длиннопост</a></li>
+					
+					</ul>
+				</div>
+			
+				<div class="post_actions_box">
+			
+					<div class="post_rating_box">
+						<ul data-story-id="3881519" data-vote="0" data-can-vote="true">
+				
+						<li><span class="post_rating post_rating_up control">&nbsp;</span></li>
+					
+						<li><span class="post_rating_count control label">172</span></li>
+					
+						<li><span class="post_rating post_rating_down control">&nbsp;</span></li>
+					
+						</ul>
+					</div>
+				
+					<noindex>
+					<div class="post_share_box ">
+						<ul>
+			
+						<li>
+							<a class="social vk" href="https://vk.com/share.php?url=https%3A%2F%2Fm.pikabu.ru%2Fstory%2Fupravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519" target="_blank" rel="nofollow">&nbsp;</a>
+						</li>
+						<li>
+							<a class="social fb" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fm.pikabu.ru%2Fstory%2Fupravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519" target="_blank" rel="nofollow">&nbsp;</a>
+						</li>
+						<li>
+							<a class="social tw" href="https://twitter.com/share?url=https%3A%2F%2Fm.pikabu.ru%2Fstory%2Fupravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519&amp;text=%D0%A3%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5+%D1%81%D0%B2%D0%B5%D1%82%D0%BE%D0%B4%D0%B8%D0%BE%D0%B4%D0%BD%D0%BE%D0%B9+%D0%BB%D0%B5%D0%BD%D1%82%D0%BE%D0%B9+%D0%BD%D0%B0+Raspberry+PI+%D1%87%D0%B5%D1%80%D0%B5%D0%B7+websocket" target="_blank" rel="nofollow">&nbsp;</a>
+						</li>
+				
+						<li>
+							<span class="comment__control comment__control-save control" data-story-id="3881519">&nbsp;</span>
+						</li>
+						</ul>
+					</div>
+					</noindex>
+			
+					<div class="post_rating_stat minilabel">
+                        <span>
+							202 плюса
+							30 минусов
+                        </span>
+                    </div>
+				
+				</div>
+			
+				</div>
+				<!--story_3881519_end-->
+			
+					<div class="post_comments">
+				
+				<noindex>
+				<div class="submenu comments__order">
+	                <ul>
+	                    <li class="control-order control hidden" data-value="3">Лучшие сверху</li>
+	                    <li class="control-order control hidden" data-value="3">Первые сверху</li>
+	                    <li class="control-order control active" data-value="3">Актуальные сверху</li>
+	                </ul>
+	            </div>
+			
+					<h3 class="comments_all_count bigtext">
+						12 комментариев
+					</h3>
+				
+				</noindex>
+			
+				<div class="comments" data-user-banned="" data-ignore-code="0">
+			
+				<div class="comment" data-id="58373818" data-parent-id="0" data-ignore-code="0" data-level="0" data-editable="false" data-vote="0">
+					<noindex>
+						<div class="comment_top_box">
+			
+				<div class="left">
+					
+					<a href="https://m.pikabu.ru/profile/damirazo" class="post_author boldlabel post__user_default_yes">damirazo</a>
+			
+							<span class="post_date">632 дня назад</span>
+						</div>
+						<div class="right">
+							<div class="comment_rating_count boldlabel plus">
+								+1
+							</div>
+							<div class="comment__more">&nbsp;</div>
+						</div>
+					</div>
+				</noindex>
+			
+
+				<div class="comment__content comment_text text "><p>Автор, Вам не приходилось работать с аналоговыми датчиками на Raspberry? Сейчас как раз стоит такая задача. Знаю о способе снятия сигнала через АЦП, с помощью I2С, но на опыте такого не делал, интересно было бы почитать.</p></div>
+			
+				<div class="comment_actions_box" style="display: none">
+					<div class="comment_hide-tree" style="display: inline-block">–</div>
+					<ul>
+						<li>
+							<div class="comment_rating_count boldlabel plus">
+								+1
+							</div>
+						</li>
+						
+						<li><span class="comment_rating comment_rating_up control "></span></li>
+						<li><span class="comment_rating comment_rating_down control "></span></li>
+					
+						<li><span class="comment__control comment__control-save control ">&nbsp;</span></li>
+						<li><a class="comment__control comment__control-link control" href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519#comment_58373818">&nbsp;</a></li>
+						<li><span class="comment_new_form_close close_control control">&nbsp;</span></li>
+				
+					</ul>
+					<div class="comment__error"></div>
+				</div>
+			
+					<div class="reply" style="display: none"></div>
+				
+						<div class="comment__toggle" style="display: none">Раскрыть ветвь<span class="comment__toggle-count">1</span> <i>&nbsp;</i></div>
+					</div>
+					<!-- End of Comment 58373818 -->
+					<div class="comment_tree " data-id="58373818" style="display: block">
+				
+				<div class="comment" data-id="58379921" data-parent-id="58373818" data-ignore-code="0" data-level="1" data-editable="false" data-vote="0">
+					<noindex>
+						<div class="comment_top_box">
+			
+				<div class="left">
+					<img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/m474641-2142877348.jpg" alt="dpohvar">&nbsp;
+					<a href="https://m.pikabu.ru/profile/dpohvar" class="post_author boldlabel post__user_author_story">dpohvar</a>
+			
+							<span class="post_date">632 дня назад</span>
+						</div>
+						<div class="right">
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+							<div class="comment__more">&nbsp;</div>
+						</div>
+					</div>
+				</noindex>
+			
+
+				<div class="comment__content comment_text text "><p>Мне не приходилось еще работать с I2C. Я встречал только один туториал, тут:&nbsp;<noindex><a rel="nofollow" href="http://raspberrypi.ru/blog/readblog/150.html" target="_blank">http://raspberrypi.ru/blog/readblog/150.html</a></noindex></p></div>
+			
+				<div class="comment_actions_box" style="display: none">
+					<div class="comment_hide-tree" style="display: none">–</div>
+					<ul>
+						<li>
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+						</li>
+						
+						<li><span class="comment_rating comment_rating_up control "></span></li>
+						<li><span class="comment_rating comment_rating_down control "></span></li>
+					
+						<li><span class="comment__control comment__control-save control ">&nbsp;</span></li>
+						<li><a class="comment__control comment__control-link control" href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519#comment_58379921">&nbsp;</a></li>
+						<li><span class="comment_new_form_close close_control control">&nbsp;</span></li>
+				
+					</ul>
+					<div class="comment__error"></div>
+				</div>
+			
+					<div class="reply" style="display: none"></div>
+				
+						<div class="comment__toggle" style="display: none">Раскрыть ветвь<span class="comment__toggle-count"></span> <i>&nbsp;</i></div>
+					</div>
+					<!-- End of Comment 58379921 -->
+					<div class="comment_tree " data-id="58379921" style="display: none">
+				
+					</div>
+				
+					</div>
+				
+				<div class="comment" data-id="58486491" data-parent-id="0" data-ignore-code="0" data-level="0" data-editable="false" data-vote="0">
+					<noindex>
+						<div class="comment_top_box">
+			
+				<div class="left">
+					<img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/m357335.jpg" alt="sashadeg">&nbsp;
+					<a href="https://m.pikabu.ru/profile/sashadeg" class="post_author boldlabel post__user_default_yes">sashadeg</a>
+			
+							<span class="post_date">630 дней назад</span>
+						</div>
+						<div class="right">
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+							<div class="comment__more">&nbsp;</div>
+						</div>
+					</div>
+				</noindex>
+			
+
+				<div class="comment__content comment_text text "><p>Автор, я не сильно понимаю, что вы написали, но все равно объясните, пожалуйста. &nbsp;То есть на обычной RGB ленте можно включать разные цвета одновременно? Как так то?!!!&nbsp;</p></div>
+			
+				<div class="comment_actions_box" style="display: none">
+					<div class="comment_hide-tree" style="display: inline-block">–</div>
+					<ul>
+						<li>
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+						</li>
+						
+						<li><span class="comment_rating comment_rating_up control "></span></li>
+						<li><span class="comment_rating comment_rating_down control "></span></li>
+					
+						<li><span class="comment__control comment__control-save control ">&nbsp;</span></li>
+						<li><a class="comment__control comment__control-link control" href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519#comment_58486491">&nbsp;</a></li>
+						<li><span class="comment_new_form_close close_control control">&nbsp;</span></li>
+				
+					</ul>
+					<div class="comment__error"></div>
+				</div>
+			
+					<div class="reply" style="display: none"></div>
+				
+						<div class="comment__toggle" style="display: none">Раскрыть ветвь<span class="comment__toggle-count">2</span> <i>&nbsp;</i></div>
+					</div>
+					<!-- End of Comment 58486491 -->
+					<div class="comment_tree " data-id="58486491" style="display: block">
+				
+				<div class="comment" data-id="58487140" data-parent-id="58486491" data-ignore-code="0" data-level="1" data-editable="false" data-vote="0">
+					<noindex>
+						<div class="comment_top_box">
+			
+				<div class="left">
+					<img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/m474641-2142877348.jpg" alt="dpohvar">&nbsp;
+					<a href="https://m.pikabu.ru/profile/dpohvar" class="post_author boldlabel post__user_author_story">dpohvar</a>
+			
+							<span class="post_date">630 дней назад</span>
+						</div>
+						<div class="right">
+							<div class="comment_rating_count boldlabel plus">
+								+1
+							</div>
+							<div class="comment__more">&nbsp;</div>
+						</div>
+					</div>
+				</noindex>
+			
+
+				<div class="comment__content comment_text text "><p>Посмотрите мой предыдущий пост, там показано, как подключить RGB ленту.</p><p><br></p><p>RGB лента имеет 4 контакта: +12v, G, R, B. </p><p>на +12v мы всегда подаем напряжение, остальные контакты управляются с помощью транзисторов, которые пропускают землю или обрывают цепь.</p><p>Raspberry PI с помощью портов gpio даёт команду открыть или закрыть транзистор. Таким образом мы можем управлять цветами R, G, B по отдельности. </p><p>Чтобы включить ленту не в полный накал, Raspberry PI должен очень быстро менять команду с 1 на 0, при этом мощность будет пропорциональна отношению продолжительности единицы к общему периоду. Яркость светодиодов квадратно-пропорциональна мощности. </p><p>Делается это с помощью драйвера pigpio.</p><p>Надеюсь все понятно объяснил.</p><p><br></p><p>UPD:</p><p>На обычной RGB ленте все светодиоды горят одинаковым цветом.&nbsp;</p><p>В начале я рассказывал про адресные ленты, у них каждый светодиод можно зажечь независимо любым цветом, но они примерно раза в 3-4 дороже обычных RGB лент.</p></div>
+			
+				<div class="comment_actions_box" style="display: none">
+					<div class="comment_hide-tree" style="display: inline-block">–</div>
+					<ul>
+						<li>
+							<div class="comment_rating_count boldlabel plus">
+								+1
+							</div>
+						</li>
+						
+						<li><span class="comment_rating comment_rating_up control "></span></li>
+						<li><span class="comment_rating comment_rating_down control "></span></li>
+					
+						<li><span class="comment__control comment__control-save control ">&nbsp;</span></li>
+						<li><a class="comment__control comment__control-link control" href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519#comment_58487140">&nbsp;</a></li>
+						<li><span class="comment_new_form_close close_control control">&nbsp;</span></li>
+				
+					</ul>
+					<div class="comment__error"></div>
+				</div>
+			
+					<div class="reply" style="display: none"></div>
+				
+						<div class="comment__toggle" style="display: none">Раскрыть ветвь<span class="comment__toggle-count">1</span> <i>&nbsp;</i></div>
+					</div>
+					<!-- End of Comment 58487140 -->
+					<div class="comment_tree " data-id="58487140" style="display: block">
+				
+				<div class="comment" data-id="58489245" data-parent-id="58487140" data-ignore-code="0" data-level="2" data-editable="false" data-vote="0">
+					<noindex>
+						<div class="comment_top_box">
+			
+				<div class="left">
+					<img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/m357335.jpg" alt="sashadeg">&nbsp;
+					<a href="https://m.pikabu.ru/profile/sashadeg" class="post_author boldlabel post__user_default_yes">sashadeg</a>
+			
+							<span class="post_date">630 дней назад</span>
+						</div>
+						<div class="right">
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+							<div class="comment__more">&nbsp;</div>
+						</div>
+					</div>
+				</noindex>
+			
+
+				<div class="comment__content comment_text text "><p>Спасибо за такое подробное объяснение , мне бы хватило вот этого&nbsp;</p><blockquote>адресные ленты, у них каждый светодиод можно зажечь независимо любым цветом</blockquote><p>буду рулить в сторону адресных лент</p><p><br></p><p>Добра вам ! =)&nbsp;</p></div>
+			
+				<div class="comment_actions_box" style="display: none">
+					<div class="comment_hide-tree" style="display: none">–</div>
+					<ul>
+						<li>
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+						</li>
+						
+						<li><span class="comment_rating comment_rating_up control "></span></li>
+						<li><span class="comment_rating comment_rating_down control "></span></li>
+					
+						<li><span class="comment__control comment__control-save control ">&nbsp;</span></li>
+						<li><a class="comment__control comment__control-link control" href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519#comment_58489245">&nbsp;</a></li>
+						<li><span class="comment_new_form_close close_control control">&nbsp;</span></li>
+				
+					</ul>
+					<div class="comment__error"></div>
+				</div>
+			
+					<div class="reply" style="display: none"></div>
+				
+						<div class="comment__toggle" style="display: none">Раскрыть ветвь<span class="comment__toggle-count"></span> <i>&nbsp;</i></div>
+					</div>
+					<!-- End of Comment 58489245 -->
+					<div class="comment_tree " data-id="58489245" style="display: none">
+				
+					</div>
+				
+					</div>
+				
+					</div>
+				
+				<div class="comment" data-id="58358586" data-parent-id="0" data-ignore-code="0" data-level="0" data-editable="false" data-vote="0">
+					<noindex>
+						<div class="comment_top_box">
+			
+				<div class="left">
+					<img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/m144885-1602677650.jpg" alt="Drame">&nbsp;
+					<a href="https://m.pikabu.ru/profile/Drame" class="post_author boldlabel post__user_default_yes">Drame</a>
+			
+							<span class="post_date">632 дня назад</span>
+						</div>
+						<div class="right">
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+							<div class="comment__more">&nbsp;</div>
+						</div>
+					</div>
+				</noindex>
+			
+
+				<div class="comment__content comment_text text "><p>Я тут читал про эти светодиоды, но возник один вопрос, можно ли выключать конкретные единицы? <noindex><a rel="nofollow" href="https://m.pikabu.ru/profile/dpohvar" target="_blank">@dpohvar</a></noindex></p></div>
+			
+				<div class="comment_actions_box" style="display: none">
+					<div class="comment_hide-tree" style="display: inline-block">–</div>
+					<ul>
+						<li>
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+						</li>
+						
+						<li><span class="comment_rating comment_rating_up control "></span></li>
+						<li><span class="comment_rating comment_rating_down control "></span></li>
+					
+						<li><span class="comment__control comment__control-save control ">&nbsp;</span></li>
+						<li><a class="comment__control comment__control-link control" href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519#comment_58358586">&nbsp;</a></li>
+						<li><span class="comment_new_form_close close_control control">&nbsp;</span></li>
+				
+					</ul>
+					<div class="comment__error"></div>
+				</div>
+			
+					<div class="reply" style="display: none"></div>
+				
+						<div class="comment__toggle" style="display: none">Раскрыть ветвь<span class="comment__toggle-count">1</span> <i>&nbsp;</i></div>
+					</div>
+					<!-- End of Comment 58358586 -->
+					<div class="comment_tree " data-id="58358586" style="display: block">
+				
+				<div class="comment" data-id="58367230" data-parent-id="58358586" data-ignore-code="0" data-level="1" data-editable="false" data-vote="0">
+					<noindex>
+						<div class="comment_top_box">
+			
+				<div class="left">
+					<img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/m474641-2142877348.jpg" alt="dpohvar">&nbsp;
+					<a href="https://m.pikabu.ru/profile/dpohvar" class="post_author boldlabel post__user_author_story">dpohvar</a>
+			
+							<span class="post_date">632 дня назад</span>
+						</div>
+						<div class="right">
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+							<div class="comment__more">&nbsp;</div>
+						</div>
+					</div>
+				</noindex>
+			
+
+				<div class="comment__content comment_text text "><p>В случае с&nbsp;WS2812 вы можете управлять каждым светодиодом отдельно.</p><p>Однако управляющая команда идет одна, на всю ленту, и содержит информацию для каждого светодиода по порядку</p></div>
+			
+				<div class="comment_actions_box" style="display: none">
+					<div class="comment_hide-tree" style="display: none">–</div>
+					<ul>
+						<li>
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+						</li>
+						
+						<li><span class="comment_rating comment_rating_up control "></span></li>
+						<li><span class="comment_rating comment_rating_down control "></span></li>
+					
+						<li><span class="comment__control comment__control-save control ">&nbsp;</span></li>
+						<li><a class="comment__control comment__control-link control" href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519#comment_58367230">&nbsp;</a></li>
+						<li><span class="comment_new_form_close close_control control">&nbsp;</span></li>
+				
+					</ul>
+					<div class="comment__error"></div>
+				</div>
+			
+					<div class="reply" style="display: none"></div>
+				
+						<div class="comment__toggle" style="display: none">Раскрыть ветвь<span class="comment__toggle-count"></span> <i>&nbsp;</i></div>
+					</div>
+					<!-- End of Comment 58367230 -->
+					<div class="comment_tree " data-id="58367230" style="display: none">
+				
+					</div>
+				
+					</div>
+				
+				<div class="comment" data-id="58350250" data-parent-id="0" data-ignore-code="0" data-level="0" data-editable="false" data-vote="0">
+					<noindex>
+						<div class="comment_top_box">
+			
+				<div class="left">
+					
+					<a href="https://m.pikabu.ru/profile/AntiFreezer" class="post_author boldlabel post__user_default_yes">AntiFreezer</a>
+			
+							<span class="post_date">632 дня назад</span>
+						</div>
+						<div class="right">
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+							<div class="comment__more">&nbsp;</div>
+						</div>
+					</div>
+				</noindex>
+			
+
+				<div class="comment__content comment_text text "><p>Хочу себе замутить аналог эмбилайта на&nbsp;WS2812. вот думаю на ардуине делать и к компу, на котором KODI (XBMC) стоит. или сразу можно на RPI поднять XBMC и&nbsp;WS2812???&nbsp;</p></div>
+			
+				<div class="comment_actions_box" style="display: none">
+					<div class="comment_hide-tree" style="display: inline-block">–</div>
+					<ul>
+						<li>
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+						</li>
+						
+						<li><span class="comment_rating comment_rating_up control "></span></li>
+						<li><span class="comment_rating comment_rating_down control "></span></li>
+					
+						<li><span class="comment__control comment__control-save control ">&nbsp;</span></li>
+						<li><a class="comment__control comment__control-link control" href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519#comment_58350250">&nbsp;</a></li>
+						<li><span class="comment_new_form_close close_control control">&nbsp;</span></li>
+				
+					</ul>
+					<div class="comment__error"></div>
+				</div>
+			
+					<div class="reply" style="display: none"></div>
+				
+						<div class="comment__toggle" style="display: none">Раскрыть ветвь<span class="comment__toggle-count">1</span> <i>&nbsp;</i></div>
+					</div>
+					<!-- End of Comment 58350250 -->
+					<div class="comment_tree " data-id="58350250" style="display: block">
+				
+				<div class="comment" data-id="58412911" data-parent-id="58350250" data-ignore-code="0" data-level="1" data-editable="false" data-vote="0">
+					<noindex>
+						<div class="comment_top_box">
+			
+				<div class="left">
+					<img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/m474641-2142877348.jpg" alt="dpohvar">&nbsp;
+					<a href="https://m.pikabu.ru/profile/dpohvar" class="post_author boldlabel post__user_author_story">dpohvar</a>
+			
+							<span class="post_date">631 день назад</span>
+						</div>
+						<div class="right">
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+							<div class="comment__more">&nbsp;</div>
+						</div>
+					</div>
+				</noindex>
+			
+
+				<div class="comment__content comment_text text "><p>Не рекомендую держать медиа-сервер на Raspberry PI. Не справится он с воспроизведением потокового видео в Full-HD. Если только брать модель 2B.</p></div>
+			
+				<div class="comment_actions_box" style="display: none">
+					<div class="comment_hide-tree" style="display: none">–</div>
+					<ul>
+						<li>
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+						</li>
+						
+						<li><span class="comment_rating comment_rating_up control "></span></li>
+						<li><span class="comment_rating comment_rating_down control "></span></li>
+					
+						<li><span class="comment__control comment__control-save control ">&nbsp;</span></li>
+						<li><a class="comment__control comment__control-link control" href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519#comment_58412911">&nbsp;</a></li>
+						<li><span class="comment_new_form_close close_control control">&nbsp;</span></li>
+				
+					</ul>
+					<div class="comment__error"></div>
+				</div>
+			
+					<div class="reply" style="display: none"></div>
+				
+						<div class="comment__toggle" style="display: none">Раскрыть ветвь<span class="comment__toggle-count"></span> <i>&nbsp;</i></div>
+					</div>
+					<!-- End of Comment 58412911 -->
+					<div class="comment_tree " data-id="58412911" style="display: none">
+				
+					</div>
+				
+					</div>
+				
+				<div class="comment" data-id="58347848" data-parent-id="0" data-ignore-code="0" data-level="0" data-editable="false" data-vote="0">
+					<noindex>
+						<div class="comment_top_box">
+			
+				<div class="left">
+					<img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/m691442-1429416857.jpg" alt="FuguSB">&nbsp;
+					<a href="https://m.pikabu.ru/profile/FuguSB" class="post_author boldlabel post__user_default_yes">FuguSB</a>
+			
+							<span class="post_date">632 дня назад</span>
+						</div>
+						<div class="right">
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+							<div class="comment__more">&nbsp;</div>
+						</div>
+					</div>
+				</noindex>
+			
+
+				<div class="comment__content comment_text text ">расскажи как сделать чувствительность от проигрываемой музыки. программирование конечно хорошо, но мне нужно автоматом. мб через микрофон как это реализовано в клубных лазерах и стробоскопах </div>
+			
+				<div class="comment_actions_box" style="display: none">
+					<div class="comment_hide-tree" style="display: inline-block">–</div>
+					<ul>
+						<li>
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+						</li>
+						
+						<li><span class="comment_rating comment_rating_up control "></span></li>
+						<li><span class="comment_rating comment_rating_down control "></span></li>
+					
+						<li><span class="comment__control comment__control-save control ">&nbsp;</span></li>
+						<li><a class="comment__control comment__control-link control" href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519#comment_58347848">&nbsp;</a></li>
+						<li><span class="comment_new_form_close close_control control">&nbsp;</span></li>
+				
+					</ul>
+					<div class="comment__error"></div>
+				</div>
+			
+					<div class="reply" style="display: none"></div>
+				
+						<div class="comment__toggle" style="display: none">Раскрыть ветвь<span class="comment__toggle-count">2</span> <i>&nbsp;</i></div>
+					</div>
+					<!-- End of Comment 58347848 -->
+					<div class="comment_tree " data-id="58347848" style="display: block">
+				
+				<div class="comment" data-id="58348561" data-parent-id="58347848" data-ignore-code="0" data-level="1" data-editable="false" data-vote="0">
+					<noindex>
+						<div class="comment_top_box">
+			
+				<div class="left">
+					<img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/m474641-2142877348.jpg" alt="dpohvar">&nbsp;
+					<a href="https://m.pikabu.ru/profile/dpohvar" class="post_author boldlabel post__user_author_story">dpohvar</a>
+			
+							<span class="post_date">632 дня назад</span>
+						</div>
+						<div class="right">
+							<div class="comment_rating_count boldlabel plus">
+								+1
+							</div>
+							<div class="comment__more">&nbsp;</div>
+						</div>
+					</div>
+				</noindex>
+			
+
+				<div class="comment__content comment_text text "><p>Сейчас работаю над этим, пытаюсь сделать цветомузыку с помощью Web Audio API.&nbsp;</p><p>Первая попытка была зажигать определенный цвет на основе частотного анализа, но выглядит это очень стрёмно. Если получится что-то стоящее - сделаю еще один пост с видео.</p></div>
+			
+				<div class="comment_actions_box" style="display: none">
+					<div class="comment_hide-tree" style="display: inline-block">–</div>
+					<ul>
+						<li>
+							<div class="comment_rating_count boldlabel plus">
+								+1
+							</div>
+						</li>
+						
+						<li><span class="comment_rating comment_rating_up control "></span></li>
+						<li><span class="comment_rating comment_rating_down control "></span></li>
+					
+						<li><span class="comment__control comment__control-save control ">&nbsp;</span></li>
+						<li><a class="comment__control comment__control-link control" href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519#comment_58348561">&nbsp;</a></li>
+						<li><span class="comment_new_form_close close_control control">&nbsp;</span></li>
+				
+					</ul>
+					<div class="comment__error"></div>
+				</div>
+			
+					<div class="reply" style="display: none"></div>
+				
+						<div class="comment__toggle" style="display: none">Раскрыть ветвь<span class="comment__toggle-count">1</span> <i>&nbsp;</i></div>
+					</div>
+					<!-- End of Comment 58348561 -->
+					<div class="comment_tree " data-id="58348561" style="display: block">
+				
+				<div class="comment" data-id="58349083" data-parent-id="58348561" data-ignore-code="0" data-level="2" data-editable="false" data-vote="0">
+					<noindex>
+						<div class="comment_top_box">
+			
+				<div class="left">
+					<img src="./Управление светодиоднои&#774; лентои&#774; на Raspberry PI через websocket_files/m691442-1429416857.jpg" alt="FuguSB">&nbsp;
+					<a href="https://m.pikabu.ru/profile/FuguSB" class="post_author boldlabel post__user_default_yes">FuguSB</a>
+			
+							<span class="post_date">632 дня назад</span>
+						</div>
+						<div class="right">
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+							<div class="comment__more">&nbsp;</div>
+						</div>
+					</div>
+				</noindex>
+			
+
+				<div class="comment__content comment_text text "><p>подпишусь и буду ждать, есть идея для реализации в машине <br></p></div>
+			
+				<div class="comment_actions_box" style="display: none">
+					<div class="comment_hide-tree" style="display: none">–</div>
+					<ul>
+						<li>
+							<div class="comment_rating_count boldlabel ">
+								0
+							</div>
+						</li>
+						
+						<li><span class="comment_rating comment_rating_up control "></span></li>
+						<li><span class="comment_rating comment_rating_down control "></span></li>
+					
+						<li><span class="comment__control comment__control-save control ">&nbsp;</span></li>
+						<li><a class="comment__control comment__control-link control" href="https://m.pikabu.ru/story/upravlenie_svetodiodnoy_lentoy_na_raspberry_pi_cherez_websocket_3881519#comment_58349083">&nbsp;</a></li>
+						<li><span class="comment_new_form_close close_control control">&nbsp;</span></li>
+				
+					</ul>
+					<div class="comment__error"></div>
+				</div>
+			
+					<div class="reply" style="display: none"></div>
+				
+						<div class="comment__toggle" style="display: none">Раскрыть ветвь<span class="comment__toggle-count"></span> <i>&nbsp;</i></div>
+					</div>
+					<!-- End of Comment 58349083 -->
+					<div class="comment_tree " data-id="58349083" style="display: none">
+				
+					</div>
+				
+					</div>
+				
+					</div>
+				
+				</div>
+			<div class="feed_ad_wrapper">
+				<div class="story__gag story__gag_relative">
+					<div id="yandex_ad_1505913679_90708" data-ad="yandex_ctx_story"></div>
+				</div>
+				<script type="text/javascript">
+					(function(w, d, n, s, t) {
+						w[n] = w[n] || [];
+						w[n].push(function() {
+							Ya.Direct.insertInto(
+								56459,
+								"yandex_ad_1505913679_90708",
+								{"site_charset":"windows-1251","stat_id":"72","ad_format":"direct","font_size":0.8,"type":"horizontal","border_type":"none","limit":1,"title_font_size":3,"site_bg_color":"FFFFFF","header_bg_color":"FFFFFF","bg_color":"FFFFFF","title_color":"454648","url_color":"454648","all_color":"777777","text_color":"454648","sitelinks_color":"83b65b","hover_color":"454648","links_underline":false}
+							);
+						});
+						t = d.documentElement.firstChild;
+						s = d.createElement("script");
+						s.type = "text/javascript";
+						s.src = "//an.yandex.ru/system/context.js";
+						s.setAttribute("async", "true");
+						t.insertBefore(s, t.firstChild);
+					})(window, document, "yandex_context_callbacks");
+				</script>
+			</div>
+				<div class="reply"><div class="comments__need-signin">
+	<p class="comments__do-signin">Войти или зарегистрироваться</p>
+	<p>чтобы оставить комментарий</p>
+</div>
+</div>
+			
+					<!-- RELATED STORIES BLOCK -->
+					<div id="related-stories" data-id="3881519" data-count="4">
+						<div class="b-related-stories" style="display: block;">
+				
+						<div class="rs-title" style="opacity: 1;">Похожие посты</div>
+					
+					<div class="rs-stories"></div>
+					<a class="rs-more-btn more_action boldlabel control" target="_blank">показать ещё</a>
+				
+						<div class="b-related-stories-tags bigtext" style="opacity: 1;">
+							<div class="rs-title" style="opacity: 1;">Похожие посты закончились. Возможно, вас заинтересуют другие посты по тегам:</div>
+							<div class="post_tags">
+								<ul>
+					
+							<li class="post_tag"><a href="https://m.pikabu.ru/tag/Nodejs/hot">Nodejs</a></li>
+						
+							<li class="post_tag"><a href="https://m.pikabu.ru/tag/JavaScript/hot">JavaScript</a></li>
+						
+							<li class="post_tag"><a href="https://m.pikabu.ru/tag/%D0%BC%D0%B8%D0%BA%D1%80%D0%BE%D0%BA%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D0%BB%D0%B5%D1%80%D1%8B/hot">микроконтроллеры</a></li>
+						
+							<li class="post_tag"><a href="https://m.pikabu.ru/tag/%D0%B3%D0%B8%D1%80%D0%BB%D1%8F%D0%BD%D0%B4%D0%B0/hot">гирлянда</a></li>
+						
+							<li class="post_tag"><a href="https://m.pikabu.ru/tag/%D1%81%D0%B2%D0%B5%D1%82%D0%BE%D0%B4%D0%B8%D0%BE%D0%B4%D0%BD%D0%B0%D1%8F%20%D0%BB%D0%B5%D0%BD%D1%82%D0%B0/hot">светодиодная лента</a></li>
+						
+							<li class="post_tag"><a href="https://m.pikabu.ru/tag/raspberry%20pi/hot">raspberry pi</a></li>
+						
+								</ul>
+							</div>
+						</div>
+					
+						</div>
+					</div>
+
+				
+					</div>
+				
+				</div>
+			
+					<div class="after_header__rollup-wrapper"><div class="after_header__rollup-button"><div class="after_header__rollup-button-holder"><!--?xml version="1.0" encoding="utf-8"?--><svg version="1.1" width="100%" height="100%" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M4 1 L10 7 L16 1" fill="transparent" stroke="#444" stroke-width="2" stroke-linecap="round"></path><path d="M4 19 L10 13 L16 19" fill="transparent" stroke="#444" stroke-width="2" stroke-linecap="round"></path></svg></div></div></div></div>
+				</div>
+			
+					
+					<!-- Yandex.Metrika counter -->
+					<script type="text/javascript">
+					    (function (d, w, c) {
+					        (w[c] = w[c] || []).push(function() {
+					            try {
+					                w.yaCounter31048081 = new Ya.Metrika({
+					                    id:31048081,
+					                    clickmap:true,
+					                    trackLinks:true,
+					                    accurateTrackBounce:true
+					                });
+					            } catch(e) { }
+					        });
+
+					        var n = d.getElementsByTagName("script")[0],
+ 					           s = d.createElement("script"),
+ 					           f = function () { n.parentNode.insertBefore(s, n); };
+ 					       s.type = "text/javascript";
+					        s.async = true;
+					        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+ 					       if (w.opera == "[object Opera]") {
+					            d.addEventListener("DOMContentLoaded", f, false);
+ 					       } else { f(); }
+					    })(document, window, "yandex_metrika_callbacks");
+					</script>
+					<noscript>&lt;div&gt;&lt;img src="https://mc.yandex.ru/watch/31048081" style="position:absolute; left:-9999px;" alt="" /&gt;&lt;/div&gt;</noscript>
+					<!-- /Yandex.Metrika counter -->
+
+					<script>
+                    	!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                    	n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+                    	n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;
+                    	t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+                    	document,"script","//connect.facebook.net/en_US/fbevents.js");
+
+                    	fbq("init", "250301471808186");
+                    	fbq("track", "PageView");
+					</script>
+                    <noscript>&lt;img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=250301471808186&amp;ev=PageView&amp;noscript=1"/&gt;</noscript>
+
+					<script>
+  						(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){
+						 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ 						 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ 						 })(window,document,"script","//www.google-analytics.com/analytics.js","ga");
+
+						 ga("create", "UA-28292940-1", "auto");
+						 ga("send", "pageview");
+
+					</script>
+					
+					<!--LiveInternet counter--><script type="text/javascript"><!--
+new Image().src = "//counter.yadro.ru/hit;Pikabu?r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";"+Math.random();//--></script><!--/LiveInternet-->
+
+					<!-- Rating@Mail.ru counter -->
+					<script type="text/javascript">
+					var _tmr = window._tmr || (window._tmr = []);
+					_tmr.push({id: "2539829", type: "pageView", start: (new Date()).getTime()});
+					(function (d, w, id) {
+					  if (d.getElementById(id)) return;
+					  var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
+					  ts.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//top-fwz1.mail.ru/js/code.js";
+					  var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
+					  if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
+					})(document, window, "topmailru-code");
+					</script><noscript>&lt;div&gt;
+					&lt;img src="//top-fwz1.mail.ru/counter?id=2539829;js=na" style="border:0;position:absolute;left:-9999px;" alt="" /&gt;
+					&lt;/div&gt;</noscript>
+					<!-- //Rating@Mail.ru counter -->
+
+
+					
+				
+			<div class="b-position-button" style="display: none; width: 18px;">
+	<i class="b-position-button__up fa fa-angle-up"></i>
+	<i class="b-position-button__down fa fa-angle-down" style="display: none;"></i>
+</div></body></html>
